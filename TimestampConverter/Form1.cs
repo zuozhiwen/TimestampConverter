@@ -64,6 +64,10 @@ namespace TimestampConverter
                 var finalDate = DateTime.Parse(clipText);
                 AppendToDisplay(finalDate);
             }
+            else
+            {
+                AppendToDisplay(DateTime.Now);
+            }
         }
 
         private void AppendToDisplay(DateTime dt)
