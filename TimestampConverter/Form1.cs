@@ -44,7 +44,7 @@ namespace TimestampConverter
         private void Button1_Click(object sender, EventArgs e)
         {
             var clipText = Clipboard.GetText(TextDataFormat.UnicodeText);
-            MatchCollection matchCollection = null;
+            MatchCollection matchCollection;
             if ((matchCollection = TimestampRegex.Matches(clipText))?.Count > 0)
             {
                 foreach (Match matchValue in matchCollection)
