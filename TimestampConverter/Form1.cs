@@ -72,6 +72,12 @@ namespace TimestampConverter
 
         private void AppendToDisplay(DateTime dt)
         {
+            richTextBox1.SelectionStart = richTextBox1.TextLength;
+            if (richTextBox1.Text.Length != 0 && !richTextBox1.Text.EndsWith("\n"))
+            {
+                richTextBox1.AppendText("\n");
+            }
+
             richTextBox1.AppendText($"{dt.ToString("yyyy-MM-dd HH:mm:ss")} -- {(int)(dt - OriginDate).TotalSeconds}\n");
         }
     }
