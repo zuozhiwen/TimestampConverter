@@ -80,5 +80,10 @@ namespace TimestampConverter
 
             richTextBox1.AppendText($"{dt.ToString("yyyy-MM-dd HH:mm:ss")} -- {(int)(dt - OriginDate).TotalSeconds}\n");
         }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = checkBox1.Checked;
+        }
     }
 }
