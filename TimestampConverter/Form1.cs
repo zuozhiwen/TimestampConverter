@@ -44,25 +44,33 @@ namespace TimestampConverter
         private void Button1_Click(object sender, EventArgs e)
         {
             var clipText = Clipboard.GetText(TextDataFormat.UnicodeText);
-            if (TimestampRegex.IsMatch(clipText))
+            MatchCollection matchCollection = null;
+            if ((matchCollection = TimestampRegex.Matches(clipText))?.Count > 0)
             {
-                double timestamp = 0;
-                if(clipText.Length == 13)
+                foreach (Match matchValue in matchCollection)
                 {
-                    timestamp = Convert.ToDouble(clipText) / 1000;
-                }
-                else
-                {
-                    timestamp = Convert.ToDouble(clipText);
-                }
+                    double timestamp = 0;
+                    if (clipText.Length == 13)
+                    {
+                        timestamp = Convert.ToDouble(matchValue.Value) / 1000;
+                    }
+                    else
+                    {
+                        timestamp = Convert.ToDouble(matchValue.Value);
+                    }
 
-                var finalDate = OriginDate.AddSeconds(timestamp);
-                AppendToDisplay(finalDate);
+                    var finalDate = OriginDate.AddSeconds(timestamp);
+                    AppendToDisplay(finalDate);
+                }
             }
-            else if (DatetimeStringRegex.IsMatch(clipText))
+            else if ((matchCollection = DatetimeStringRegex.Matches(clipText))?.Count > 0)
             {
-                var finalDate = DateTime.Parse(clipText);
-                AppendToDisplay(finalDate);
+                foreach (Match matchValue in matchCollection)
+                {
+                    var finalDate = DateTime.Parse(matchValue.Value);
+                    AppendToDisplay(finalDate);
+                }
+                
             }
             else
             {

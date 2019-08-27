@@ -40,7 +40,7 @@
             this.richTextBox1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(12, 12);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(776, 426);
+            this.richTextBox1.Size = new System.Drawing.Size(321, 426);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
@@ -51,7 +51,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(658, 446);
+            this.button1.Location = new System.Drawing.Point(196, 446);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(114, 28);
             this.button1.TabIndex = 2;
@@ -62,7 +62,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(547, 453);
+            this.checkBox1.Location = new System.Drawing.Point(92, 453);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
@@ -75,7 +75,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 486);
+            this.ClientSize = new System.Drawing.Size(345, 486);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBox1);
