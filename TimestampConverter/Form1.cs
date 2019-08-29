@@ -69,6 +69,7 @@ namespace TimestampConverter
                 {
                     var finalDate = DateTime.Parse(matchValue.Value);
                     AppendToDisplay(finalDate);
+                    AppendToDisplay(finalDate.AddDays(1));
                 }
                 
             }
