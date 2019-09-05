@@ -39,6 +39,8 @@ namespace TimestampConverter
             {
                 AppendToDisplay(dt);
             }
+
+            richTextBox1.AppendText("\n");
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -69,7 +71,10 @@ namespace TimestampConverter
                 {
                     var finalDate = DateTime.Parse(matchValue.Value);
                     AppendToDisplay(finalDate);
-                    AppendToDisplay(finalDate.AddDays(1));
+                    if (finalDate.TimeOfDay.TotalSeconds == 0)
+                    {
+                        AppendToDisplay(finalDate.AddDays(1));
+                    }
                 }
                 
             }
