@@ -49,16 +49,16 @@ namespace TimestampConverter
             MatchCollection matchCollection;
             if ((matchCollection = TimestampRegex.Matches(clipText))?.Count > 0)
             {
-                foreach (Match matchValue in matchCollection)
+                foreach (string matchValue in matchCollection.Cast<Match>().Select(o=>o.Value).OrderBy(o=>o))
                 {
                     double timestamp = 0;
                     if (clipText.Length == 13)
                     {
-                        timestamp = Convert.ToDouble(matchValue.Value) / 1000;
+                        timestamp = Convert.ToDouble(matchValue) / 1000;
                     }
                     else
                     {
-                        timestamp = Convert.ToDouble(matchValue.Value);
+                        timestamp = Convert.ToDouble(matchValue);
                     }
 
                     var finalDate = OriginDate.AddSeconds(timestamp);
@@ -71,7 +71,7 @@ namespace TimestampConverter
                 {
                     var finalDate = DateTime.Parse(matchValue.Value);
                     AppendToDisplay(finalDate);
-                    if (finalDate.TimeOfDay.TotalSeconds == 0)
+                    if (finalDate.TimeOfDay.TotalSeconds == 0 && matchCollection.Count == 1)
                     {
                         AppendToDisplay(finalDate.AddDays(1));
                     }
