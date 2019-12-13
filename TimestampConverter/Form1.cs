@@ -47,12 +47,14 @@ namespace TimestampConverter
         {
             var clipText = Clipboard.GetText(TextDataFormat.UnicodeText);
             MatchCollection matchCollection;
+            bool matched = false;
+
             if ((matchCollection = TimestampRegex.Matches(clipText))?.Count > 0)
             {
                 foreach (string matchValue in matchCollection.Cast<Match>().Select(o=>o.Value).OrderBy(o=>o))
                 {
                     double timestamp = 0;
-                    if (clipText.Length == 13)
+                    if (matchValue.Length == 13)
                     {
                         timestamp = Convert.ToDouble(matchValue) / 1000;
                     }
@@ -64,8 +66,11 @@ namespace TimestampConverter
                     var finalDate = OriginDate.AddSeconds(timestamp);
                     AppendToDisplay(finalDate);
                 }
+
+                matched = true;
             }
-            else if ((matchCollection = DatetimeStringRegex.Matches(clipText))?.Count > 0)
+            
+            if ((matchCollection = DatetimeStringRegex.Matches(clipText))?.Count > 0)
             {
                 foreach (Match matchValue in matchCollection)
                 {
@@ -76,9 +81,11 @@ namespace TimestampConverter
                         AppendToDisplay(finalDate.AddDays(1));
                     }
                 }
-                
+
+                matched = true;
             }
-            else
+
+            if(matched == false)
             {
                 AppendToDisplay(DateTime.Now);
             }
