@@ -20,7 +20,7 @@ namespace TimestampConverter
         }
 
         private static readonly DateTime OriginDate = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-        private static readonly Regex TimestampRegex = new Regex(@"(?<=\D|^)(\d{13}|\d{10})(?=\D|$)", RegexOptions.Compiled);
+        private static Regex TimestampRegex = new Regex(@"(?<=\s)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
         private static readonly Regex DatetimeStringRegex = new Regex(@"\d{4}-\d{1,2}-\d{1,2}((\s|T)\d{1,2}:\d{1,2}(:\d{2})?)?", RegexOptions.Compiled);
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,7 +35,7 @@ namespace TimestampConverter
                 DateTime.Today.AddDays(1)
             };
 
-            foreach(var dt in dateList)
+            foreach (var dt in dateList)
             {
                 AppendToDisplay(dt);
             }
@@ -51,7 +51,7 @@ namespace TimestampConverter
 
             if ((matchCollection = TimestampRegex.Matches(clipText))?.Count > 0)
             {
-                foreach (string matchValue in matchCollection.Cast<Match>().Select(o=>o.Value).OrderBy(o=>o))
+                foreach (string matchValue in matchCollection.Cast<Match>().Select(o => o.Value).OrderBy(o => o))
                 {
                     double timestamp = 0;
                     if (matchValue.Length == 13)
@@ -69,7 +69,7 @@ namespace TimestampConverter
 
                 matched = true;
             }
-            
+
             if ((matchCollection = DatetimeStringRegex.Matches(clipText))?.Count > 0)
             {
                 foreach (Match matchValue in matchCollection)
@@ -85,7 +85,7 @@ namespace TimestampConverter
                 matched = true;
             }
 
-            if(matched == false)
+            if (matched == false)
             {
                 AppendToDisplay(DateTime.Now);
             }
@@ -105,6 +105,18 @@ namespace TimestampConverter
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             this.TopMost = checkBox1.Checked;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+                TimestampRegex = new Regex(@"(?<=\D|^)(\d{13}|\d{10})(?=\D|$)", RegexOptions.Compiled);
+            }
+            else
+            {
+                TimestampRegex = new Regex(@"(?<=\s)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
+            }
         }
     }
 }
