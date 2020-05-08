@@ -111,11 +111,13 @@ namespace TimestampConverter
         {
             if (checkBox2.Checked)
             {
+                // 文本中查找
                 TimestampRegex = new Regex(@"(?<=\D|^)(\d{13}|\d{10})(?=\D|$)", RegexOptions.Compiled);
             }
             else
             {
-                TimestampRegex = new Regex(@"(?<=\s)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
+                // 查找独立的时间戳文本
+                TimestampRegex = new Regex(@"(?<=\s|,|^)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
             }
         }
     }
