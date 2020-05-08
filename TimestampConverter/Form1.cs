@@ -20,7 +20,7 @@ namespace TimestampConverter
         }
 
         private static readonly DateTime OriginDate = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-        private static Regex TimestampRegex = new Regex(@"(?<=\s)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
+        private static Regex TimestampRegex = new Regex(@"(?<=\s|,|^)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
         private static readonly Regex DatetimeStringRegex = new Regex(@"\d{4}-\d{1,2}-\d{1,2}((\s|T)\d{1,2}:\d{1,2}(:\d{2})?)?", RegexOptions.Compiled);
 
         private void Form1_Load(object sender, EventArgs e)
