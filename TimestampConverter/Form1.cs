@@ -120,5 +120,33 @@ namespace TimestampConverter
                 TimestampRegex = new Regex(@"(?<=\s|,|^)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var clipText = Clipboard.GetText(TextDataFormat.UnicodeText);
+            var matchCollection = DatetimeStringRegex.Matches(clipText);
+            if(matchCollection.Count == 1)
+            {
+                var match = matchCollection.Cast<Match>().First();
+                var dateTime = DateTime.Parse(match.Value);
+                var sql = $"{(long)(dateTime.Date - OriginDate).TotalMilliseconds} <= ts and ts < {(long)(dateTime.Date.AddDays(1) - OriginDate).TotalMilliseconds}";
+                Clipboard.SetText(sql, TextDataFormat.UnicodeText);
+                richTextBox1.AppendText(sql + "\n");
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var clipText = Clipboard.GetText(TextDataFormat.UnicodeText);
+            var matchCollection = DatetimeStringRegex.Matches(clipText);
+            if (matchCollection.Count == 1)
+            {
+                var match = matchCollection.Cast<Match>().First();
+                var dateTime = DateTime.Parse(match.Value);
+                var mongoSql = "\"timestamp\": { $gte: NumberInt(" + (int)(dateTime.Date - OriginDate).TotalSeconds + "), $lt: NumberInt(" + (int)(dateTime.Date.AddDays(1) - OriginDate).TotalSeconds + ") }";
+                Clipboard.SetText(mongoSql, TextDataFormat.UnicodeText);
+                richTextBox1.AppendText(mongoSql + "\n");
+            }
+        }
     }
 }
