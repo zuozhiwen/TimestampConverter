@@ -22,6 +22,7 @@ namespace TimestampConverter
         private static readonly DateTime OriginDate = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
         private static Regex TimestampRegex = new Regex(@"(?<=\s|,|^)(\d{13}|\d{10})(?=\s|,|$)", RegexOptions.Compiled);
         private static readonly Regex DatetimeStringRegex = new Regex(@"\d{4}-\d{1,2}-\d{1,2}((\s|T)\d{1,2}:\d{1,2}(:\d{2})?)?", RegexOptions.Compiled);
+        private TimeZoneInfo lastCalcTimeZone;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -41,6 +42,14 @@ namespace TimestampConverter
             }
 
             richTextBox1.AppendText("\n");
+
+            // 初始化时区下拉框
+            foreach (var item in TimeZoneInfo.GetSystemTimeZones())
+            {
+                comboBox1.Items.Add(item);
+            }
+
+            comboBox1.SelectedItem = comboBox1.Items.Cast<TimeZoneInfo>().Where(o=>o.DisplayName.Contains("北京")).First();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -74,7 +83,8 @@ namespace TimestampConverter
             {
                 foreach (Match matchValue in matchCollection)
                 {
-                    var finalDate = DateTime.Parse(matchValue.Value);
+                    DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(matchValue.Value), comboBox1.SelectedItem as TimeZoneInfo ?? TimeZoneInfo.Local);
+                    var finalDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, TimeZoneInfo.Local);
                     AppendToDisplay(finalDate);
                     if (finalDate.TimeOfDay.TotalSeconds == 0 && matchCollection.Count == 1)
                     {
@@ -93,13 +103,32 @@ namespace TimestampConverter
 
         private void AppendToDisplay(DateTime dt)
         {
+            if (dt == null)
+            {
+                return;
+            }
+
             richTextBox1.SelectionStart = richTextBox1.TextLength;
             if (richTextBox1.Text.Length != 0 && !richTextBox1.Text.EndsWith("\n"))
             {
                 richTextBox1.AppendText("\n");
             }
 
-            richTextBox1.AppendText($"{dt.ToString("yyyy-MM-dd HH:mm:ss")} -- {(int)(dt - OriginDate).TotalSeconds}\n");
+            // 时区变化
+            if (lastCalcTimeZone != comboBox1.SelectedItem)
+            {
+                richTextBox1.AppendText("\n时区：" + comboBox1.SelectedItem.ToString() + "\n");
+            }
+            lastCalcTimeZone = comboBox1.SelectedItem as TimeZoneInfo;
+
+            // 计算日期
+            var localDt = TimeZoneInfo.ConvertTime(dt, comboBox1.SelectedItem as TimeZoneInfo ?? TimeZoneInfo.Local);
+            if (localDt == null)
+            {
+                return;
+            }
+
+            richTextBox1.AppendText($"{localDt:yyyy-MM-dd HH:mm:ss} -- {(int)(dt - OriginDate).TotalSeconds}\n");
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
